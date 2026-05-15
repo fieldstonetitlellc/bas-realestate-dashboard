@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BAS Real Estate â€” Pipeline Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fieldstone: #466079;
+      --bg: #ffffff;
+      --surface: #fafaf8;
+      --surface-2: #f5f4f0;
+      --border: #e5e3dd;
+      --border-2: #d6d3cc;
+      --text: #1c1c1a;
+      --text-2: #555550;
+      --muted: #8a8780;
+      --success: #3B6D11;
+      --warning: #BA7517;
+      --info: #185FA5;
+      --accent: #993556;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #181715;
+        --surface: #232220;
+        --surface-2: #2d2c29;
+        --border: #3a3835;
+        --border-2: #4a4742;
+        --text: #f0eee9;
+        --text-2: #b8b5ad;
+        --muted: #7a776f;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      padding: 24px 32px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .sub { color: var(--muted); font-size: 11px; }
+    .section-title {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin: 0 0 12px;
+      font-weight: 500;
+    }
+
+    /* Cobrand strip */
+    .cobrand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 4px 22px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+      min-height: 90px;
+    }
+    .cobrand-side { display: flex; flex-direction: column; }
+    .cobrand-side.right { align-items: flex-end; }
+    .cobrand-label {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .fs-logo { height: 52px; width: auto; display: block; }
+    @media (prefers-color-scheme: dark) {
+      .fs-logo { filter: brightness(0) invert(1); }
+    }
+    .bas-mark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      font-size: 32px;
+      color: var(--text);
+      line-height: 1;
+    }
+    .bas-mark-sub {
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      color: var(--text-2);
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    .cobrand-divider {
+      width: 1px;
+      align-self: stretch;
+      background: var(--border);
+      margin: 0 16px;
+    }
+
+    /* Title row */
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+    }
+    .page-title {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+    .page-sub {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-top: 4px;
+    }
+    .date-range {
+      text-align: right;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .date-range strong { color: var(--text-2); font-weight: 500; font-size: 13px; }
+
+    /* KPI strip */
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .kpi {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-bottom: 8px;
+    }
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1;
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .kpi-sub.success { color: var(--success); }
+    .kpi-sub.warning { color: var(--warning); }
+
+    /* Pipeline stages */
+    .stages {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .stage {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stage-count { font-size: 28px; font-weight: 500; line-height: 1; }
+    .stage-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .stage.muted .stage-count { color: var(--text-2); }
+    .stage.info .stage-count { color: var(--info); }
+    .stage.warning .stage-count { color: var(--warning); }
+    .stage.accent .stage-count { color: var(--accent); }
+    .stage.success .stage-count { color: var(--success); }
+
+    /* Card */
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      text-align: left;
+      font-weight: 500;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:last-child td { border: none; }
+
+    /* Agent pills */
+    .agent-pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    /* Bars */
+    .bar-track {
+      height: 6px;
+      background: var(--surface-2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--text);
+      border-radius: 999px;
+    }
+    .agent-row { padding: 8px 0; }
+    .agent-row-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .neighborhood-row {
+      display: grid;
+      grid-template-columns: 140px 1fr 32px;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 0;
+      font-size: 13px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px 0 0;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      body { padding: 16px; }
+      .kpi-strip, .stages { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr !important; }
+      .cobrand { flex-direction: column; align-items: flex-start; }
+      .cobrand-side.right { align-items: flex-start; margin-top: 16px; }
+      .cobrand-divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COBRAND STRIP -->
+  <div class="cobrand">
+    <div class="cobrand-side">
+      <span class="cobrand-label">Provided by</span>
+      <img src="logo.png" alt="Fieldstone Title" class="fs-logo" />
+    </div>
+    <div class="cobrand-divider"></div>
+    <div class="cobrand-side right">
+      <span class="cobrand-label">Prepared for</span>
+      <span class="bas-mark">BAS</span>
+      <span class="bas-mark-sub">Real Estate</span>
+    </div>
+  </div>
+
+  <!-- TITLE ROW -->
+  <div class="title-row">
+    <div>
+      <div class="page-title">Pipeline Dashboard</div>
+      <div class="page-sub">Metro Detroit luxury real estate</div>
+    </div>
+    <div class="date-range">
+      <div>Year to date</div>
+      <strong>Jan 1 — May 15, 2026</strong>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-label">YTD orders</div>
+      <div class="kpi-value">8</div>
+      <div class="kpi-sub success">+67% vs. last month</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">YTD closed</div>
+      <div class="kpi-value">0</div>
+      <div class="kpi-sub">— volume</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Active pipeline</div>
+      <div class="kpi-value">8</div>
+      <div class="kpi-sub">$1.15M in flight</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Avg sale price</div>
+      <div class="kpi-value">—</div>
+      <div class="kpi-sub">Closed deals</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Avg days to close</div>
+      <div class="kpi-value">—</div>
+      <div class="kpi-sub">From contract</div>
+    </div>
+  </div>
+
+  <!-- PIPELINE STAGES -->
+  <div class="section-title">Active pipeline by stage</div>
+  <div class="stages">
+    <div class="stage muted"><div class="stage-count">2</div><div class="stage-label">New orders</div></div>
+    <div class="stage info"><div class="stage-count">1</div><div class="stage-label">Title search</div></div>
+    <div class="stage warning"><div class="stage-count">0</div><div class="stage-label">Cleared to close</div></div>
+    <div class="stage accent"><div class="stage-count">5</div><div class="stage-label">Scheduled</div></div>
+    <div class="stage success"><div class="stage-count">0</div><div class="stage-label">Closed YTD</div></div>
+  </div>
+
+  <!-- UPCOMING CLOSINGS -->
+  <div class="section-title">Upcoming closings â€” next 14 days</div>
+  <div class="card" style="padding: 4px 14px; margin-bottom: 28px;">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 70px;">Date</th>
+          <th>Property</th>
+          <th style="width: 110px;">Agent</th>
+          <th style="width: 90px; text-align: right;">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+            <tr>
+              <td style="font-weight:500;">May 15</td>
+              <td>897 Augusta Drive<br><span class="sub">Rochester Hills</span></td>
+              <td><span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span></td>
+              <td style="text-align:right;font-weight:500;">$330K</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">May 27</td>
+              <td>9655 Birch Run<br><span class="sub">Birmingham</span></td>
+              <td><span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span></td>
+              <td style="text-align:right;font-weight:500;">$640K</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">May 27</td>
+              <td>3951 Trailway Commons Circle<br><span class="sub">Lake Orion</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- AGENTS + NEIGHBORHOODS -->
+  <div class="two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px;">
+    <div class="card">
+      <div class="section-title">Agent performance YTD</div>
+      
+            <div class="agent-row">
+              <div class="agent-row-header">
+                <span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span>
+                <span class="sub">0 closed · 4 active · —</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;background:#633806;"></div></div>
+            </div>
+            <div class="agent-row">
+              <div class="agent-row-header">
+                <span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span>
+                <span class="sub">0 closed · 1 active · —</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#72243E;"></div></div>
+            </div>
+            <div class="agent-row">
+              <div class="agent-row-header">
+                <span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span>
+                <span class="sub">0 closed · 1 active · —</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#333333;"></div></div>
+            </div>
+            <div class="agent-row">
+              <div class="agent-row-header">
+                <span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span>
+                <span class="sub">0 closed · 1 active · —</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#3C3489;"></div></div>
+            </div>
+            <div class="agent-row">
+              <div class="agent-row-header">
+                <span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span>
+                <span class="sub">0 closed · 1 active · —</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#712B13;"></div></div>
+            </div>
+    </div>
+    <div class="card">
+      <div class="section-title">Closings by neighborhood</div>
+      
+            <div class="neighborhood-row">
+              <span>Bloomfield Hills</span>
+              <div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div>
+              <span class="sub" style="text-align:right;">2</span>
+            </div>
+            <div class="neighborhood-row">
+              <span>Other</span>
+              <div class="bar-track"><div class="bar-fill" style="width:50%;"></div></div>
+              <span class="sub" style="text-align:right;">1</span>
+            </div>
+            <div class="neighborhood-row">
+              <span>Birmingham</span>
+              <div class="bar-track"><div class="bar-fill" style="width:50%;"></div></div>
+              <span class="sub" style="text-align:right;">1</span>
+            </div>
+            <div class="neighborhood-row">
+              <span>Sterling Heights</span>
+              <div class="bar-track"><div class="bar-fill" style="width:50%;"></div></div>
+              <span class="sub" style="text-align:right;">1</span>
+            </div>
+            <div class="neighborhood-row">
+              <span>Royal Oak</span>
+              <div class="bar-track"><div class="bar-fill" style="width:50%;"></div></div>
+              <span class="sub" style="text-align:right;">1</span>
+            </div>
+            <div class="neighborhood-row">
+              <span>Rochester Hills</span>
+              <div class="bar-track"><div class="bar-fill" style="width:50%;"></div></div>
+              <span class="sub" style="text-align:right;">1</span>
+            </div>
+            <div class="neighborhood-row">
+              <span>Lake Orion</span>
+              <div class="bar-track"><div class="bar-fill" style="width:50%;"></div></div>
+              <span class="sub" style="text-align:right;">1</span>
+            </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    A trusted partnership Â· Refreshed daily from Qualia Â· Last updated May 15, 2026
+  </div>
+
+</body>
+</html>
