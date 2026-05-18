@@ -100,28 +100,15 @@
       margin: 0 16px;
     }
 
-    /* Title row */
     .title-row {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       margin-bottom: 24px;
     }
-    .page-title {
-      font-size: 22px;
-      font-weight: 500;
-      line-height: 1.2;
-    }
-    .page-sub {
-      font-size: 12px;
-      color: var(--text-2);
-      margin-top: 4px;
-    }
-    .date-range {
-      text-align: right;
-      font-size: 11px;
-      color: var(--muted);
-    }
+    .page-title { font-size: 22px; font-weight: 500; line-height: 1.2; }
+    .page-sub { font-size: 12px; color: var(--text-2); margin-top: 4px; }
+    .date-range { text-align: right; font-size: 11px; color: var(--muted); }
     .date-range strong { color: var(--text-2); font-weight: 500; font-size: 13px; }
 
     /* KPI strip */
@@ -129,37 +116,80 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
-      margin-bottom: 28px;
+      margin-bottom: 12px;
     }
     .kpi {
       background: var(--surface);
       border-radius: 10px;
       padding: 16px 18px;
+      position: relative;
     }
-    .kpi-label {
-      font-size: 12px;
-      color: var(--text-2);
-      margin-bottom: 8px;
-    }
-    .kpi-value {
-      font-size: 26px;
-      font-weight: 500;
-      line-height: 1;
-    }
-    .kpi-sub {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
+    .kpi-label { font-size: 12px; color: var(--text-2); margin-bottom: 8px; }
+    .kpi-value { font-size: 26px; font-weight: 500; line-height: 1; }
+    .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
     .kpi-sub.success { color: var(--success); }
     .kpi-sub.warning { color: var(--warning); }
+
+    /* Drillable elements */
+    .drill {
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      user-select: none;
+    }
+    .drill:hover { filter: brightness(0.97); }
+    @media (prefers-color-scheme: dark) {
+      .drill:hover { filter: brightness(1.1); }
+    }
+    .chev {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      color: var(--muted);
+      transition: transform 0.2s;
+      display: block;
+      width: 12px;
+      height: 12px;
+    }
+    .drill.open .chev { transform: rotate(180deg); }
+    .stage.drill .chev { top: 10px; right: 10px; }
+    .card.drill .chev { top: 16px; right: 18px; }
+
+    /* Drill panels */
+    .panel {
+      display: none;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      animation: panelIn 0.18s ease-out;
+    }
+    .panel.show { display: block; }
+    .panel-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .panel-empty {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 13px;
+      padding: 12px 0;
+    }
 
     /* Pipeline stages */
     .stages {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
-      margin-bottom: 28px;
+      margin-bottom: 12px;
     }
     .stage {
       background: var(--bg);
@@ -167,6 +197,7 @@
       border-radius: 10px;
       padding: 14px 12px;
       text-align: center;
+      position: relative;
     }
     .stage-count { font-size: 28px; font-weight: 500; line-height: 1; }
     .stage-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
@@ -176,15 +207,14 @@
     .stage.accent .stage-count { color: var(--accent); }
     .stage.success .stage-count { color: var(--success); }
 
-    /* Card */
     .card {
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 18px 20px;
+      position: relative;
     }
 
-    /* Tables */
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th {
       text-align: left;
@@ -203,7 +233,6 @@
     }
     tr:last-child td { border: none; }
 
-    /* Agent pills */
     .agent-pill {
       display: inline-flex;
       align-items: center;
@@ -213,18 +242,13 @@
       font-weight: 500;
     }
 
-    /* Bars */
     .bar-track {
       height: 6px;
       background: var(--surface-2);
       border-radius: 999px;
       overflow: hidden;
     }
-    .bar-fill {
-      height: 100%;
-      background: var(--text);
-      border-radius: 999px;
-    }
+    .bar-fill { height: 100%; background: var(--text); border-radius: 999px; }
     .agent-row { padding: 8px 0; }
     .agent-row-header {
       display: flex;
@@ -241,7 +265,16 @@
       font-size: 13px;
     }
 
-    /* Footer */
+    .status-pill {
+      display: inline-flex;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--text-2);
+      font-weight: 500;
+    }
+
     .footer {
       text-align: center;
       padding: 20px 0 0;
@@ -252,8 +285,13 @@
       margin-top: 32px;
       border-top: 1px solid var(--border);
     }
+    .hint {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin: 20px 0 4px;
+    }
 
-    /* Responsive */
     @media (max-width: 900px) {
       body { padding: 16px; }
       .kpi-strip, .stages { grid-template-columns: repeat(2, 1fr); }
@@ -266,7 +304,6 @@
 </head>
 <body>
 
-  <!-- COBRAND STRIP -->
   <div class="cobrand">
     <div class="cobrand-side">
       <span class="cobrand-label">Provided by</span>
@@ -280,7 +317,6 @@
     </div>
   </div>
 
-  <!-- TITLE ROW -->
   <div class="title-row">
     <div>
       <div class="page-title">Pipeline Dashboard</div>
@@ -292,19 +328,21 @@
     </div>
   </div>
 
-  <!-- KPI STRIP -->
   <div class="kpi-strip">
-    <div class="kpi">
+    <div class="kpi drill" data-target="panel-ytd-orders">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="kpi-label">YTD orders</div>
       <div class="kpi-value">8</div>
       <div class="kpi-sub success">+67% vs. last month</div>
     </div>
-    <div class="kpi">
+    <div class="kpi drill" data-target="panel-ytd-closed">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="kpi-label">YTD closed</div>
       <div class="kpi-value">0</div>
       <div class="kpi-sub">— volume</div>
     </div>
-    <div class="kpi">
+    <div class="kpi drill" data-target="panel-active">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="kpi-label">Active pipeline</div>
       <div class="kpi-value">8</div>
       <div class="kpi-sub">$1.15M in flight</div>
@@ -321,18 +359,247 @@
     </div>
   </div>
 
-  <!-- PIPELINE STAGES -->
-  <div class="section-title">Active pipeline by stage</div>
-  <div class="stages">
-    <div class="stage muted"><div class="stage-count">2</div><div class="stage-label">New orders</div></div>
-    <div class="stage info"><div class="stage-count">1</div><div class="stage-label">Title search</div></div>
-    <div class="stage warning"><div class="stage-count">0</div><div class="stage-label">Cleared to close</div></div>
-    <div class="stage accent"><div class="stage-count">5</div><div class="stage-label">Scheduled</div></div>
-    <div class="stage success"><div class="stage-count">0</div><div class="stage-label">Closed YTD</div></div>
+  <div id="panel-ytd-orders" class="panel">
+    <div class="panel-title">All YTD orders (8)</div>
+    <table><thead><tr><th>Opened</th><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              <td>May 14</td>
+              <td>43211 Coralbean Court<br><span class="sub">Other</span></td>
+              <td><span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 19</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>May 08</td>
+              <td>32076 Saint Annes Drive<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 05</td>
+              <td style="text-align:right;font-weight:500;">$184K</td>
+            </tr>
+            <tr>
+              <td>May 07</td>
+              <td>9655 Birch Run<br><span class="sub">Birmingham</span></td>
+              <td><span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">$640K</td>
+            </tr>
+            <tr>
+              <td>May 01</td>
+              <td>11064 Nature Way<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Title Search</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>May 01</td>
+              <td>43341 Tuscany Drive<br><span class="sub">Sterling Heights</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>1484 Ryan Street<br><span class="sub">Royal Oak</span></td>
+              <td><span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>897 Augusta Drive<br><span class="sub">Rochester Hills</span></td>
+              <td><span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 15</td>
+              <td style="text-align:right;font-weight:500;">$330K</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>3951 Trailway Commons Circle<br><span class="sub">Lake Orion</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table>
+  </div>
+  <div id="panel-ytd-closed" class="panel">
+    <div class="panel-title">YTD closed orders (0)</div>
+    <div class="panel-empty">No files have closed YTD.</div>
+  </div>
+  <div id="panel-active" class="panel">
+    <div class="panel-title">Active pipeline (8)</div>
+    <table><thead><tr><th>Opened</th><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              <td>May 14</td>
+              <td>43211 Coralbean Court<br><span class="sub">Other</span></td>
+              <td><span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 19</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>May 08</td>
+              <td>32076 Saint Annes Drive<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 05</td>
+              <td style="text-align:right;font-weight:500;">$184K</td>
+            </tr>
+            <tr>
+              <td>May 07</td>
+              <td>9655 Birch Run<br><span class="sub">Birmingham</span></td>
+              <td><span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">$640K</td>
+            </tr>
+            <tr>
+              <td>May 01</td>
+              <td>11064 Nature Way<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Title Search</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>May 01</td>
+              <td>43341 Tuscany Drive<br><span class="sub">Sterling Heights</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>1484 Ryan Street<br><span class="sub">Royal Oak</span></td>
+              <td><span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>897 Augusta Drive<br><span class="sub">Rochester Hills</span></td>
+              <td><span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 15</td>
+              <td style="text-align:right;font-weight:500;">$330K</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>3951 Trailway Commons Circle<br><span class="sub">Lake Orion</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table>
   </div>
 
-  <!-- UPCOMING CLOSINGS -->
-  <div class="section-title">Upcoming closings — next 14 days</div>
+  <div class="section-title" style="margin-top: 12px;">Active pipeline by stage</div>
+  <div class="stages">
+    <div class="stage muted drill" data-target="panel-stage-new">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="stage-count">2</div>
+      <div class="stage-label">New orders</div>
+    </div>
+    <div class="stage info drill" data-target="panel-stage-search">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="stage-count">1</div>
+      <div class="stage-label">Title search</div>
+    </div>
+    <div class="stage warning drill" data-target="panel-stage-cleared">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="stage-count">0</div>
+      <div class="stage-label">Cleared to close</div>
+    </div>
+    <div class="stage accent drill" data-target="panel-stage-scheduled">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="stage-count">5</div>
+      <div class="stage-label">Scheduled</div>
+    </div>
+    <div class="stage success drill" data-target="panel-stage-closed">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="stage-count">0</div>
+      <div class="stage-label">Closed YTD</div>
+    </div>
+  </div>
+
+  <div id="panel-stage-new" class="panel"><div class="panel-title">New orders</div><table><thead><tr><th>Opened</th><th>Property</th><th style="width:110px;">Agent</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              <td>May 01</td>
+              <td>43341 Tuscany Drive<br><span class="sub">Sterling Heights</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>1484 Ryan Street<br><span class="sub">Royal Oak</span></td>
+              <td><span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span></td>
+              
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div>
+  <div id="panel-stage-search" class="panel"><div class="panel-title">Files in title search</div><table><thead><tr><th>Opened</th><th>Property</th><th style="width:110px;">Agent</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              <td>May 01</td>
+              <td>11064 Nature Way<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div>
+  <div id="panel-stage-cleared" class="panel"><div class="panel-title">Cleared to close</div><div class="panel-empty">No files in this category.</div></div>
+  <div id="panel-stage-scheduled" class="panel"><div class="panel-title">Scheduled closings</div><table><thead><tr><th>Opened</th><th>Property</th><th style="width:110px;">Agent</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              <td>May 14</td>
+              <td>43211 Coralbean Court<br><span class="sub">Other</span></td>
+              <td><span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span></td>
+              
+              <td>Jun 19</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              <td>May 08</td>
+              <td>32076 Saint Annes Drive<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              
+              <td>Jun 05</td>
+              <td style="text-align:right;font-weight:500;">$184K</td>
+            </tr>
+            <tr>
+              <td>May 07</td>
+              <td>9655 Birch Run<br><span class="sub">Birmingham</span></td>
+              <td><span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span></td>
+              
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">$640K</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>897 Augusta Drive<br><span class="sub">Rochester Hills</span></td>
+              <td><span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span></td>
+              
+              <td>May 15</td>
+              <td style="text-align:right;font-weight:500;">$330K</td>
+            </tr>
+            <tr>
+              <td>Apr 27</td>
+              <td>3951 Trailway Commons Circle<br><span class="sub">Lake Orion</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div>
+  <div id="panel-stage-closed" class="panel"><div class="panel-title">Closed YTD</div><div class="panel-empty">No files have closed YTD.</div></div>
+
+  <div class="section-title" style="margin-top: 16px;">Upcoming closings — next 14 days</div>
   <div class="card" style="padding: 4px 14px; margin-bottom: 28px;">
     <table>
       <thead>
@@ -361,9 +628,9 @@
     </table>
   </div>
 
-  <!-- AGENTS + NEIGHBORHOODS -->
   <div class="two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px;">
-    <div class="card">
+    <div class="card drill" data-target="panel-agents">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="section-title">Agent performance YTD</div>
       
             <div class="agent-row">
@@ -375,10 +642,10 @@
             </div>
             <div class="agent-row">
               <div class="agent-row-header">
-                <span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span>
+                <span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span>
                 <span class="sub">0 closed · 1 active · —</span>
               </div>
-              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#333333;"></div></div>
+              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#712B13;"></div></div>
             </div>
             <div class="agent-row">
               <div class="agent-row-header">
@@ -389,20 +656,21 @@
             </div>
             <div class="agent-row">
               <div class="agent-row-header">
+                <span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span>
+                <span class="sub">0 closed · 1 active · —</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#333333;"></div></div>
+            </div>
+            <div class="agent-row">
+              <div class="agent-row-header">
                 <span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span>
                 <span class="sub">0 closed · 1 active · —</span>
               </div>
               <div class="bar-track"><div class="bar-fill" style="width:25%;background:#3C3489;"></div></div>
             </div>
-            <div class="agent-row">
-              <div class="agent-row-header">
-                <span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span>
-                <span class="sub">0 closed · 1 active · —</span>
-              </div>
-              <div class="bar-track"><div class="bar-fill" style="width:25%;background:#712B13;"></div></div>
-            </div>
     </div>
-    <div class="card">
+    <div class="card drill" data-target="panel-neighborhoods">
+      <svg class="chev" width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="section-title">Closings by neighborhood</div>
       
             <div class="neighborhood-row">
@@ -443,9 +711,165 @@
     </div>
   </div>
 
+  <div id="panel-agents" class="panel">
+    <div class="panel-title">Agent breakdown — all files</div>
+    <div style="margin-bottom:20px;"><div style="margin-bottom:8px;"><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span> <span class="sub">— 4 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>32076 Saint Annes Drive<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 05</td>
+              <td style="text-align:right;font-weight:500;">$184K</td>
+            </tr>
+            <tr>
+              
+              <td>11064 Nature Way<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Title Search</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              
+              <td>43341 Tuscany Drive<br><span class="sub">Sterling Heights</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr>
+            <tr>
+              
+              <td>3951 Trailway Commons Circle<br><span class="sub">Lake Orion</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="margin-bottom:8px;"><span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span> <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>9655 Birch Run<br><span class="sub">Birmingham</span></td>
+              <td><span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">$640K</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="margin-bottom:8px;"><span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span> <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>1484 Ryan Street<br><span class="sub">Royal Oak</span></td>
+              <td><span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="margin-bottom:8px;"><span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span> <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>43211 Coralbean Court<br><span class="sub">Other</span></td>
+              <td><span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 19</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="margin-bottom:8px;"><span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span> <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>897 Augusta Drive<br><span class="sub">Rochester Hills</span></td>
+              <td><span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 15</td>
+              <td style="text-align:right;font-weight:500;">$330K</td>
+            </tr></tbody></table></div>
+  </div>
+  <div id="panel-neighborhoods" class="panel">
+    <div class="panel-title">Files by neighborhood</div>
+    <div style="margin-bottom:20px;"><div style="font-weight:500;margin-bottom:8px;">Birmingham <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>9655 Birch Run<br><span class="sub">Birmingham</span></td>
+              <td><span class="agent-pill" style="background:#FAECE7;color:#712B13;">Christie</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">$640K</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="font-weight:500;margin-bottom:8px;">Bloomfield Hills <span class="sub">— 2 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>32076 Saint Annes Drive<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 05</td>
+              <td style="text-align:right;font-weight:500;">$184K</td>
+            </tr>
+            <tr>
+              
+              <td>11064 Nature Way<br><span class="sub">Bloomfield Hills</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Title Search</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="font-weight:500;margin-bottom:8px;">Lake Orion <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>3951 Trailway Commons Circle<br><span class="sub">Lake Orion</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 27</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="font-weight:500;margin-bottom:8px;">Other <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>43211 Coralbean Court<br><span class="sub">Other</span></td>
+              <td><span class="agent-pill" style="background:#EEEEEE;color:#333333;">Joseph</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>Jun 19</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="font-weight:500;margin-bottom:8px;">Rochester Hills <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>897 Augusta Drive<br><span class="sub">Rochester Hills</span></td>
+              <td><span class="agent-pill" style="background:#FBEAF0;color:#72243E;">Raquel</span></td>
+              <td><span class="status-pill">Scheduled</span></td>
+              <td>May 15</td>
+              <td style="text-align:right;font-weight:500;">$330K</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="font-weight:500;margin-bottom:8px;">Royal Oak <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>1484 Ryan Street<br><span class="sub">Royal Oak</span></td>
+              <td><span class="agent-pill" style="background:#EEEDFE;color:#3C3489;">Joey</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div><div style="margin-bottom:20px;"><div style="font-weight:500;margin-bottom:8px;">Sterling Heights <span class="sub">— 1 active, 0 closed</span></div><table><thead><tr><th>Property</th><th style="width:110px;">Agent</th><th style="width:130px;">Stage</th><th style="width:80px;">Closing</th><th style="width:90px;text-align:right;">Price</th></tr></thead><tbody>
+            <tr>
+              
+              <td>43341 Tuscany Drive<br><span class="sub">Sterling Heights</span></td>
+              <td><span class="agent-pill" style="background:#FAEEDA;color:#633806;">Bernard</span></td>
+              <td><span class="status-pill">New</span></td>
+              <td>—</td>
+              <td style="text-align:right;font-weight:500;">—</td>
+            </tr></tbody></table></div>
+  </div>
+
+  <div class="hint">Click any tile or card to expand its details</div>
+
   <div class="footer">
     A trusted partnership · Refreshed daily from Qualia · Last updated May 18, 2026
   </div>
 
+  <script>
+    document.querySelectorAll('.drill').forEach(el => {
+      el.addEventListener('click', () => {
+        const targetId = el.getAttribute('data-target');
+        if (!targetId) return;
+        const panel = document.getElementById(targetId);
+        if (!panel) return;
+        const wasOpen = panel.classList.contains('show');
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+        document.querySelectorAll('.drill').forEach(d => d.classList.remove('open'));
+        if (!wasOpen) {
+          panel.classList.add('show');
+          el.classList.add('open');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
